@@ -1,6 +1,18 @@
 package com.example.altrieserciziee.payloads;
 
+import java.util.List;
 import java.util.UUID;
 
-public record NewProductResponseDTO(UUID uuid) {
+public record NewProductResponseDTO(UUID uuid, Float price, String category, List<String> img, String description, String details, Boolean isOnSale, Float discountedPrice, Integer discountedPercentage ) {
 }
+/*
+*  String title;
+    Float price;
+    String category;
+    List<String> img;
+    String description;
+    String details;
+    Boolean isOnSale;
+    Float discountedPrice;
+    Integer discountedPercentage;
+* */

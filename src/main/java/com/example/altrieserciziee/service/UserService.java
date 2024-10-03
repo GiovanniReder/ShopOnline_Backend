@@ -83,7 +83,7 @@ public class UserService {
         return userRepository.findById(id).orElseThrow(() -> new NotFoundException(id));
     }
 
-    public List<User> getAll() {
+    public List<User> getAll(String sortBy) {
         return this.userRepository.findAll();
     }
 

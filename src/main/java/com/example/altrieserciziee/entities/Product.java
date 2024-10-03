@@ -28,9 +28,15 @@ public class Product {
     List<String> img;
     String description;
     String details;
+    Boolean isOnSale;
+    Float discountedPrice;
+    Integer discountedPercentage;
 
-    public Product(String details, String description, List<String> img, String category, Float price, String title) {
+    public Product(String details, int discountedPercentage, Float discountedPrice, boolean isOnSale, String description, List<String> img, String category, Float price, String title) {
         this.details = details;
+        this.discountedPercentage = discountedPercentage;
+        this.discountedPrice = discountedPrice;
+        this.isOnSale = isOnSale;
         this.description = description;
         this.img = img;
         this.category = category;

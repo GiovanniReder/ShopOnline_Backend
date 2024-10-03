@@ -9,6 +9,7 @@ import com.example.altrieserciziee.payloads.NewUserDTO;
 import com.example.altrieserciziee.repositories.UserRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -24,13 +25,16 @@ public class UserService {
     private UserRepository userRepository;
     @Autowired
     private Cloudinary cloudinary;
+    @Autowired
+    private PasswordEncoder bcrypt;
 
     public User save(NewUserDTO body){
         this.userRepository.findByEmail(body.email()).ifPresent(
                 user -> {
                     throw new BadRequestException("Email has already taken");
                 });
-       User newUser= new User(body.surname(), body.name(), body.password(), body.email());
+        String encodedPassword = bcrypt.encode(body.password());
+       User newUser= new User(body.surname(), body.name(), encodedPassword, body.email());
        userRepository.save(newUser);
        return newUser;
     }

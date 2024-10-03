@@ -19,10 +19,20 @@ public class AuthService {
 
     public User authenticateUserAndGenerateToken(UserLoginDTO payload){
         User found = userService.findByEmail(payload.email());
-        if (bcrypt.matches(payload.password(), found.getPassword())){
-            return found;
-        } else {
+
+        if (found == null) {
+            System.out.println("User not found with email: " + payload.email());
             throw new UnauthorizedException("Wrong Credentials!");
         }
+
+       // System.out.println("Password from request: " + payload.password());
+//        System.out.println("Password from DB: " + found.getPassword());
+        // se tolgo l'if funziona il login ma perdi il controllo sulla password
+       if (bcrypt.matches(payload.password(), found.getPassword())){
+           return found;
+       } else {
+           throw new UnauthorizedException("Wrong Credentials!");
+       }
+      //  return found;
     }
 }

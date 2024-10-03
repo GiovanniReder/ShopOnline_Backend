@@ -34,8 +34,8 @@ public class User implements UserDetails {
     private Boolean isAdmin;
 
     public User( String surname, String name, String password, String email) {
-        this.isAdmin = false;
-        this.avatar = "https://ui-avatars.com/api/?name=" + this.name + "+" + this.surname;;
+        this.isAdmin = true;
+        this.avatar = "https://ui-avatars.com/api/?name=" + this.name + "+" + this.surname;
         this.surname = surname;
         this.name = name;
         this.password = password;

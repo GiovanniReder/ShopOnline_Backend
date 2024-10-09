@@ -24,9 +24,14 @@ public class MailgunSender {
                 .queryString("from", "kuroakuma@libero.it")
                 .queryString("to", recipient.getEmail())
                 .queryString("subject", "Registrazione completata con successo!")
-                .queryString("html", "<html><body><h1>Benvenuto " + recipient.getName() + "!</h1>"
-                        + "<p>Complimenti per esserti registrato con successo alla nostra piattaforma.</p>"
-                        + "</body></html>")
+                .queryString("html",
+                        "<html><body style=\"background-color: rgb(33, 33, 33); color: beige\">" +
+                                "<h1>Benvenuto " + recipient.getName() + "!</h1>" +
+                                "<p>Complimenti per esserti registrato con successo alla nostra piattaforma.</p>" +
+                                "<p>Alcuni dei tuoi giochi preferiti sono in offerta!!</p>" +
+                                "<a href=\"https://www.instant-gaming.com/it/\" style=\"color: #3498db;\">Clicca qui per andare allo store!</a>" +
+                                "</body></html>")
+
                 .asJson();
 
         System.out.println(response.getBody());

@@ -7,6 +7,7 @@ import com.example.altrieserciziee.exceptions.BadRequestException;
 import com.example.altrieserciziee.exceptions.NotFoundException;
 import com.example.altrieserciziee.payloads.NewUserDTO;
 import com.example.altrieserciziee.repositories.UserRepository;
+import com.example.altrieserciziee.tools.MailgunSender;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -27,15 +28,20 @@ public class UserService {
     private Cloudinary cloudinary;
     @Autowired
     private PasswordEncoder bcrypt;
+    @Autowired
+    private MailgunSender mailgunSender;
+
 
     public User save(NewUserDTO body){
         this.userRepository.findByEmail(body.email()).ifPresent(
                 user -> {
                     throw new BadRequestException("Email has already taken");
                 });
-        String encodedPassword = bcrypt.encode(body.password());
-       User newUser= new User(body.surname(), body.name(), encodedPassword, body.email());
+
+       User newUser= new User(body.surname(), body.name(), bcrypt.encode(body.password()), body.email());
+        System.out.println( "password criptata: " + bcrypt.encode(body.password()));
        userRepository.save(newUser);
+       mailgunSender.sendRegistrationEmail(newUser);
        return newUser;
     }
 

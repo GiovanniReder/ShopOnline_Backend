@@ -22,10 +22,6 @@ public record NewUserDTO(
         @Size(min = 2, max = 50, message = "The surname must be between 2 and 50 characters!")
         String surname
 
-
-
-
-
 ) {
 }
 /*

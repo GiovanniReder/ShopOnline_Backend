@@ -43,4 +43,80 @@ public class Product {
         this.price = price;
         this.title = title;
     }
+
+    public UUID getId() {
+        return id;
+    }
+
+    public Integer getDiscountedPercentage() {
+        return discountedPercentage;
+    }
+
+    public void setDiscountedPercentage(Integer discountedPercentage) {
+        this.discountedPercentage = discountedPercentage;
+    }
+
+    public Float getDiscountedPrice() {
+        return discountedPrice;
+    }
+
+    public void setDiscountedPrice(Float discountedPrice) {
+        this.discountedPrice = discountedPrice;
+    }
+
+    public Boolean getOnSale() {
+        return isOnSale;
+    }
+
+    public void setOnSale(Boolean onSale) {
+        isOnSale = onSale;
+    }
+
+    public String getDetails() {
+        return details;
+    }
+
+    public void setDetails(String details) {
+        this.details = details;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public List<String> getImg() {
+        return img;
+    }
+
+    public void setImg(List<String> img) {
+        this.img = img;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
+
+    public Float getPrice() {
+        return price;
+    }
+
+    public void setPrice(Float price) {
+        this.price = price;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
 }

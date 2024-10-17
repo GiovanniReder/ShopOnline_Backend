@@ -20,7 +20,7 @@ import java.util.UUID;
 @Setter
 @ToString
 @NoArgsConstructor
-@JsonIgnoreProperties(value = { "password", "id",  "authorities", "enabled", "accountNonExpired", "credentialsNonExpired", "accountNonLocked"  })
+@JsonIgnoreProperties(value = { "id",  "authorities", "enabled", "accountNonExpired", "credentialsNonExpired", "accountNonLocked"  })
 public class User implements UserDetails {
 
     @Id
@@ -43,6 +43,7 @@ public class User implements UserDetails {
     }
 
 
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of();
@@ -50,12 +51,12 @@ public class User implements UserDetails {
 
     @Override
     public String getPassword() {
-        return "";
+        return this.password;
     }
 
     @Override
     public String getUsername() {
-        return "";
+        return this.name;
     }
 
     @Override
@@ -76,5 +77,14 @@ public class User implements UserDetails {
     @Override
     public boolean isEnabled() {
         return UserDetails.super.isEnabled();
+    }
+
+
+    public Boolean getAdmin() {
+        return isAdmin;
+    }
+
+    public void setAdmin(Boolean admin) {
+        isAdmin = admin;
     }
 }

@@ -23,8 +23,8 @@ import java.util.UUID;
 public class UserController {
     @Autowired
     private UserService userService;
-    @Autowired
-    private PasswordEncoder bcrypt;
+//    @Autowired
+//    private PasswordEncoder bcrypt;
 
     @GetMapping
     public List<User> getAll(@RequestParam(defaultValue = "id") String sortBy){
@@ -45,7 +45,7 @@ public class UserController {
                 body.name(),
                 body.surname(),
                 body.email(),
-                bcrypt.encode(body.password())
+                body.password()
 
 
         );

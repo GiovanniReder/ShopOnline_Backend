@@ -5,6 +5,7 @@ import com.cloudinary.utils.ObjectUtils;
 import com.example.altrieserciziee.entities.User;
 import com.example.altrieserciziee.exceptions.BadRequestException;
 import com.example.altrieserciziee.exceptions.NotFoundException;
+import com.example.altrieserciziee.exceptions.UnauthorizedException;
 import com.example.altrieserciziee.payloads.NewUserDTO;
 import com.example.altrieserciziee.repositories.UserRepository;
 import com.example.altrieserciziee.tools.MailgunSender;
@@ -39,7 +40,7 @@ public class UserService {
                 });
 
        User newUser= new User(body.surname(), body.name(), bcrypt.encode(body.password()), body.email());
-        System.out.println( "password criptata: " + bcrypt.encode(body.password()));
+//        System.out.println( "password criptata: " + bcrypt.encode(body.password()));
        userRepository.save(newUser);
        mailgunSender.sendRegistrationEmail(newUser);
        return newUser;
@@ -49,9 +50,15 @@ public class UserService {
         return userRepository.findById(userId).orElseThrow(() -> new NotFoundException(userId));
     }
 
-    public User findByEmail(String email){
-        return userRepository.findByEmail(email).orElseThrow(() -> new NotFoundException( "User with email: " + email + " not found!"));
+//    public User findByEmail(String email){
+//        return userRepository.findByEmail(email).orElseThrow(() -> new NotFoundException( "User with email: " + email + " not found!"));
+//    }
+
+    public User findByEmail(String email) {
+        return userRepository.findByEmail(email)
+                .orElseThrow(() -> new UnauthorizedException("User not found with this email"));
     }
+
 
     public String uploadAvatar(MultipartFile file) throws IOException {
         return (String) this.cloudinary.uploader().upload(file.getBytes(), ObjectUtils.emptyMap()).get("url");

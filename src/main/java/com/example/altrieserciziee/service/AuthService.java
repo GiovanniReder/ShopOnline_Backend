@@ -19,23 +19,31 @@ public class AuthService {
     private JWTTools jwtTools;
 
 
-    public User authenticateUserAndGenerateToken(UserLoginDTO payload){
+//    public User authenticateUserAndGenerateToken(UserLoginDTO payload){
+//        User found = userService.findByEmail(payload.email());
+//        if (bcrypt.matches(payload.password(), found.getPassword())){
+//           return found;
+//       } else {
+//           System.out.println( "payload.password: " + payload.password() + "found.password: " + found.getPassword());
+//           throw new UnauthorizedException("Wrong Credentials!");
+//       }
+//
+//    }
+
+    public User authenticateUserAndGenerateToken(UserLoginDTO payload) {
         User found = userService.findByEmail(payload.email());
-
+        System.out.println("Retrieved user: " + found);
         if (found == null) {
-            System.out.println("User not found with email: " + payload.email());
-            throw new UnauthorizedException("Wrong Credentials!!!");
+            throw new UnauthorizedException("User not found with this email!");
         }
+        System.out.println("Found user password: " + found.getPassword());
 
-        System.out.println("Password from request: " + payload.password());
-        System.out.println("Password from DB: " + found);
-        // se tolgo l'if funziona il login ma perdi il controllo sulla password
-       if (bcrypt.matches(payload.password(), found.getPassword())){
-           return found;
-       } else {
-           System.out.println( "payload.password: " + payload.password() + "found.password: " + found.getName());
-           throw new UnauthorizedException("Wrong Credentials!");
-       }
-
+        if (bcrypt.matches(payload.password(), found.getPassword())) {
+            return found;
+        } else {
+            throw new UnauthorizedException("Wrong Credentials!");
+        }
     }
+
+
 }

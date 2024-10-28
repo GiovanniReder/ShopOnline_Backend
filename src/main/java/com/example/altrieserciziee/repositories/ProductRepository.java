@@ -8,6 +8,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 public interface ProductRepository extends JpaRepository<Product, UUID> {
+//    Optional<Product> findById(UUID uuid);
     Optional<Product> findByTitle(String title);
     List<Product> findByCategory(String category);
     List<Product> findByIsOnSale(Boolean isOnSale);

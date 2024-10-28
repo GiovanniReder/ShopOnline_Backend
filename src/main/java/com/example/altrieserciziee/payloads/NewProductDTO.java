@@ -32,28 +32,23 @@ public record NewProductDTO(
 
         Boolean isOnSale,
 
-        @NotNull(message = "The discountedPrice is a mandatory data!")
-        @PositiveOrZero(message = "Discounted price must be positive or zero!")
-        Float discountedPrice,
-
         @Min(0)
         @Max(100)
         Integer discountedPercentage
 ) {
         public NewProductDTO {
 
-                if (discountedPrice > price) {
-                        throw new IllegalArgumentException("Discounted price cannot be greater than the regular price.");
-                }
-
-
                 if (Boolean.TRUE.equals(isOnSale)) {
-                        if (discountedPrice == null || discountedPercentage == null) {
-                                throw new IllegalArgumentException("If the product is on sale, discounted price and percentage must be provided.");
+                        if (discountedPercentage == null) {
+                                throw new IllegalArgumentException("If the product is on sale, discounted percentage must be provided.");
+                        }
+                        if (discountedPercentage < 0 || discountedPercentage > 100) {
+                                throw new IllegalArgumentException("Discounted percentage must be between 0 and 100.");
                         }
                 }
         }
 }
+
 
 /*
 String title;

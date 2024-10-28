@@ -1,13 +1,16 @@
 package com.example.altrieserciziee.controllers;
 
 import com.example.altrieserciziee.entities.Product;
+import com.example.altrieserciziee.entities.User;
 import com.example.altrieserciziee.exceptions.BadRequestException;
 import com.example.altrieserciziee.payloads.NewProductDTO;
 import com.example.altrieserciziee.payloads.NewProductResponseDTO;
+import com.example.altrieserciziee.payloads.NewUserDTO;
 import com.example.altrieserciziee.payloads.NewUserResponseDTO;
 import com.example.altrieserciziee.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -30,7 +33,7 @@ public class ProductController {
             System.out.println(validationResult.getAllErrors());
             throw new BadRequestException(validationResult.getAllErrors());
         }
-        return new NewProductResponseDTO(this.productService.save(body).getId(), body.price(), body.category(), body.img(), body.description(), body.details(), body.isOnSale(), body.discountedPrice(), body.discountedPercentage());
+        return new NewProductResponseDTO(this.productService.save(body).getId(), body.title(), body.price(), body.category(), body.img(), body.description(), body.details(), body.isOnSale(), body.discountedPercentage());
     }
 
     @GetMapping
@@ -44,7 +47,34 @@ public class ProductController {
     }
 
     @GetMapping("/title/{productTitle}")
-    public Optional<Product> getProductByTitle(@PathVariable String title){
-        return Optional.ofNullable(this.productService.findByTitle(title));
+    public Optional<Product> getProductByTitle(@PathVariable String productTitle){
+        return Optional.ofNullable(this.productService.findByTitle(productTitle));
     }
-}
+
+
+
+    @PutMapping("/{productId}/patch")
+    public ResponseEntity<Product> patchProduct (
+            @PathVariable UUID productId,
+            @RequestBody @Validated NewProductDTO body,
+            BindingResult bindingResult
+    ) {
+        if (bindingResult.hasErrors()) {
+            System.out.println(bindingResult.getAllErrors());
+            throw new BadRequestException(bindingResult.getAllErrors());
+        }
+
+
+        Product updatedProduct = productService.patchProduct(
+
+                body.title(),
+                body.price(),
+                body.category(),
+                body.img(),
+                body.description(),
+                body.details(),
+                body.isOnSale(),
+                body.discountedPercentage());
+
+return ResponseEntity.ok(updatedProduct);
+    }}

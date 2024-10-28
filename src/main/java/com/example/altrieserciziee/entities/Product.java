@@ -1,12 +1,9 @@
 package com.example.altrieserciziee.entities;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
 
 import java.util.List;
 import java.util.UUID;
@@ -32,16 +29,25 @@ public class Product {
     Float discountedPrice;
     Integer discountedPercentage;
 
-    public Product(String details, int discountedPercentage, Float discountedPrice, boolean isOnSale, String description, List<String> img, String category, Float price, String title) {
+    public Product(String details, int discountedPercentage, boolean isOnSale, String description, List<String> img, String category, Float price, String title) {
         this.details = details;
         this.discountedPercentage = discountedPercentage;
-        this.discountedPrice = discountedPrice;
         this.isOnSale = isOnSale;
         this.description = description;
         this.img = img;
         this.category = category;
         this.price = price;
         this.title = title;
+    }
+
+    @PrePersist
+    @PreUpdate
+    public void calculateDiscountedPrice() {
+        if (isOnSale != null && isOnSale && price != null && discountedPercentage != null && discountedPercentage > 0) {
+            this.discountedPrice = price * (100 - discountedPercentage) / 100;
+        } else {
+            this.discountedPrice = price;
+        }
     }
 
     public UUID getId() {
@@ -56,12 +62,9 @@ public class Product {
         this.discountedPercentage = discountedPercentage;
     }
 
+
     public Float getDiscountedPrice() {
         return discountedPrice;
-    }
-
-    public void setDiscountedPrice(Float discountedPrice) {
-        this.discountedPrice = discountedPrice;
     }
 
     public Boolean getOnSale() {
@@ -119,4 +122,6 @@ public class Product {
     public void setTitle(String title) {
         this.title = title;
     }
+
+
 }

@@ -1,6 +1,7 @@
 package com.example.altrieserciziee.service;
 
 import com.example.altrieserciziee.entities.Product;
+import com.example.altrieserciziee.entities.User;
 import com.example.altrieserciziee.exceptions.BadRequestException;
 import com.example.altrieserciziee.exceptions.NotFoundException;
 import com.example.altrieserciziee.payloads.NewProductDTO;
@@ -24,9 +25,33 @@ public class ProductService {
         if (this.productRepository.findByTitle(body.title()).isPresent()) {
             throw new BadRequestException("Product already exists!");
         }
-        Product newProduct = new Product(body.details(), body.discountedPercentage(), body.discountedPrice(), body.isOnSale(), body.description(), body.img(), body.category(), body.price(), body.title());
+        Product newProduct = new Product(
+                body.details(),
+                body.discountedPercentage(),
+                body.isOnSale(),
+                body.description(),
+                body.img(),
+                body.category(),
+                body.price(),
+                body.title());
+        newProduct.calculateDiscountedPrice();
 
         return this.productRepository.save(newProduct);
+    }
+
+    // patch product
+
+    public Product patchProduct(String title, Float price, String category, List<String> img, String description, String details, Boolean isOnSale, Integer discountedPercentage ){
+       Product product = productRepository.findByTitle(title).orElseThrow(()-> new NotFoundException("Product with title: " + title + " not found!"));
+       product.setTitle(title);
+       product.setPrice(price);
+       product.setCategory(category);
+       product.setImg(img);
+       product.setDescription(description);
+       product.setDetails(details);
+       product.setIsOnSale(isOnSale);
+       product.setDiscountedPercentage(discountedPercentage);
+       return productRepository.save(product);
     }
 
     public List<Product> getAll(String sortBy){

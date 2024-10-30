@@ -41,10 +41,20 @@ public class ProductController {
         return this.productService.getAll(sortBy);
     }
 
-    @GetMapping("/{productId}")
-    public Optional<Product> getProductById(@PathVariable UUID productId){
+    @GetMapping("/{productId:[0-9a-fA-F-]{36}}")
+    public Optional<Product> getProductById(@PathVariable UUID productId) {
         return Optional.ofNullable(this.productService.findById(productId));
     }
+
+
+    @GetMapping("/onSale")
+    public List<Product> getProductByIsOnSale(
+            @RequestParam(name = "isOnSale", required = false, defaultValue = "true") Boolean isOnSale) {
+        return this.productService.findByIsOnSale(isOnSale);
+    }
+
+
+
 
     @GetMapping("/title/{productTitle}")
     public Optional<Product> getProductByTitle(@PathVariable String productTitle){

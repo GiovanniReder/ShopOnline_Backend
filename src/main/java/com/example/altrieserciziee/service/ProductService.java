@@ -63,7 +63,7 @@ public class ProductService {
     }
 
     public Product findByTitle(String title){
-        return productRepository.findByTitle(title).orElseThrow(() -> new NotFoundException(title));
+        return productRepository.findByTitle(title).orElseThrow(() -> new NotFoundException(title + " not found!"));
     }
 
     public List<Product> findByCategories(String categories){

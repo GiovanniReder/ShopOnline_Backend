@@ -53,6 +53,11 @@ public class ProductController {
         return this.productService.findByIsOnSale(isOnSale);
     }
 
+    @GetMapping("/allProduct")
+    public List<Product> getAllProduct(@RequestParam(defaultValue = "title") String sortBy){
+        return this.productService.getAll(sortBy);
+    }
+
 
 
 
